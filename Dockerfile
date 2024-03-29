@@ -1,5 +1,5 @@
 # Base image
-From python:3-alphine3.15
+From python:3.8
 
 # Create a directory
 WORKDIR /app
@@ -14,4 +14,4 @@ RUN pip install -r requirements.txt
 EXPOSE 5000
 
 # Command to run the main.py file
-CMD python ./main.py
+CMD python ./index.py

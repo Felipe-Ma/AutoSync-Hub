@@ -3,8 +3,8 @@
 # Secret Token
 SECRET_TOKEN: d6b7102b2fd1d510fd9fa44343e2a24c2b6a303e01288b47689acab522dd5a5d
 
-Port: 80
+PORT: 80
 
-Repositories:
+REPOSITORIES:
   - timer_app: /root/Desktop/timer_app
   - lab_scheduler: /root/lab-scheduler

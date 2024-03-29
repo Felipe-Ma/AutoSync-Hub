@@ -1,0 +1,1 @@
+# Opens log files, and compares to repositories that were loaded.

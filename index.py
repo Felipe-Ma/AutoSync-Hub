@@ -66,6 +66,9 @@ def validate_signature(data, signature):
     print(signature)
     return hmac.compare_digest(expected_signature, signature)
 
+# Identify the repository the webhook is associated with
+#def get_repository(data):
+
 
 def load_config():
     global REPOSITORIES # Reference the global hash table
@@ -121,9 +124,9 @@ def load_config():
 
 if __name__ == '__main__':
     load_config()
-    #print(REPOSITORIES)
-    #print(PORT)
-    #print(SECRET_TOKEN)
+    print(REPOSITORIES)
+    print(PORT)
+    print(SECRET_TOKEN)
 
     # Turn off debug mode in production environment
     app.run(host='0.0.0.0', port=5000, debug=True)

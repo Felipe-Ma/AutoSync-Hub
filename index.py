@@ -1,5 +1,5 @@
 import os.path
-
+import hmac
 from flask import Flask, jsonify, request
 import yaml
 import logging
@@ -42,10 +42,27 @@ def say_hello():
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
+    # Secret Token Validation
+    signature = request.headers.get('X-Hub-Signature-256')
+    if signature is None:
+        webhook_logger.error("GitHub signature missing.")
+        return jsonify({"msg": "GitHub signature missing."}), 400
+    # Verify the signature
+    if not validate_signature(request.data, signature):
+        webhook_logger.error("Invalid signature.")
+        return jsonify({"msg": "Invalid signature."}), 401
+    
     data = request.get_json()
     #print(data)
     webhook_logger.info("Webhook received")
     return jsonify({"msg": "Webhook received"})
+
+def validate_signature(data, signature):
+    # Validate the signature using HMAC SHA-256 algorithm.
+    hmac_gen = hmac.new(SECRET_TOKEN.encode(), data, hashlib.sha256)
+    expected_signature = 'sha256=' + hmac_gen.hexdigest()
+    return hmac.compare_digest(expected_signature, signature)
+
 
 def load_config():
     global REPOSITORIES # Reference the global hash table

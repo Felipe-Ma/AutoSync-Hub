@@ -1,5 +1,6 @@
 import os.path
 import hmac
+import hashlib
 from flask import Flask, jsonify, request
 import yaml
 import logging
@@ -51,7 +52,7 @@ def webhook():
     if not validate_signature(request.data, signature):
         webhook_logger.error("Invalid signature.")
         return jsonify({"msg": "Invalid signature."}), 401
-    
+
     data = request.get_json()
     #print(data)
     webhook_logger.info("Webhook received")
@@ -61,6 +62,8 @@ def validate_signature(data, signature):
     # Validate the signature using HMAC SHA-256 algorithm.
     hmac_gen = hmac.new(SECRET_TOKEN.encode(), data, hashlib.sha256)
     expected_signature = 'sha256=' + hmac_gen.hexdigest()
+    print(expected_signature)
+    print(signature)
     return hmac.compare_digest(expected_signature, signature)
 
 
@@ -118,9 +121,9 @@ def load_config():
 
 if __name__ == '__main__':
     load_config()
-    print(REPOSITORIES)
-    print(PORT)
-    print(SECRET_TOKEN)
+    #print(REPOSITORIES)
+    #print(PORT)
+    #print(SECRET_TOKEN)
 
     # Turn off debug mode in production environment
-    #app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

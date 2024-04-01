@@ -6,6 +6,7 @@ import yaml
 import logging
 from validate_signature import *
 from repository import *
+from config_loader import *
 
 app = Flask(__name__)
 
@@ -13,10 +14,6 @@ app = Flask(__name__)
 REPOSITORIES = {}
 PORT = 0
 SECRET_TOKEN = ''
-
-# Set up logging for the /webhook route
-logging.basicConfig(level=logging.INFO)
-
 
 @app.route('/')
 def hello_world():
@@ -54,7 +51,8 @@ def webhook():
 #def get_repository(data):
 
 
-def load_config():
+"""def load_config():
+    
     global REPOSITORIES # Reference the global hash table
     global PORT # Reference the global port variable
     global SECRET_TOKEN # Reference the global secret token
@@ -101,16 +99,22 @@ def load_config():
         except yaml.YAMLError as exc:
             # log to file in the same directory
             logging.error(f"Error loading configuration: {exc}")
-        return config
+        return config"""
 
 
 
 
 if __name__ == '__main__':
-    load_config()
-    print(REPOSITORIES)
-    print(PORT)
-    print(SECRET_TOKEN)
+    #REPOSITORIES, PORT, SECRET_TOKEN = load_config()
+    #print(REPOSITORIES)
+    #print(PORT)
+    #print(SECRET_TOKEN)
+    # Load the configuration
+    config = load_config()
+    REPOSITORIES = config.repositories
+    PORT = config.port
+    SECRET_TOKEN = config.secret_token
+
 
     # Turn off debug mode in production environment
     app.run(host='0.0.0.0', port=5000, debug=True)

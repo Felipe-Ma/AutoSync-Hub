@@ -1,9 +1,5 @@
-import os.path
-import hmac
-import hashlib
+# index.py
 from flask import Flask, jsonify, request
-import yaml
-import logging
 from validate_signature import *
 from repository import *
 from config_loader import *

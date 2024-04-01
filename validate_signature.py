@@ -1,5 +1,7 @@
 import hmac
 import hashlib
+from logger_config import setup_logger
+logger = setup_logger()
 
 # Python file to validate signature
 def validate_signature(data, signature, secret_token):
@@ -10,6 +12,8 @@ def validate_signature(data, signature, secret_token):
     """ DEBUGGING """
     print("Expected: " + expected_signature)
     print("Received: " + signature)
+    logger.info("Expected: " + expected_signature)
+    logger.info("Received: " + signature)
     """ DEBUGGING """
     return hmac.compare_digest(expected_signature, signature) # Compare the expected and received signatures
 

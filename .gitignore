@@ -13,3 +13,5 @@ webhook.log
 *.log
 webhook.log
 *.log
+__pycache__/logger_config.cpython-311.pyc
+__pycache__/validate_signature.cpython-311.pyc

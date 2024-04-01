@@ -15,23 +15,7 @@ PORT = 0
 SECRET_TOKEN = ''
 
 # Set up logging for the /webhook route
-log_path = os.path.dirname(os.path.realpath(__file__))
-webhook_log = os.path.join(log_path, 'webhook.log')
-
-# Create a specific logger for the webhook
-webhook_logger = logging.getLogger('webhook_logger')
-webhook_logger.setLevel(logging.INFO)
-
-# Create file handler which logs even debug messages
-fh = logging.FileHandler(webhook_log)
-fh.setLevel(logging.INFO)
-
-# Create formatter and add it to the handler
-formatter = logging.Formatter('%(asctime)s - %(message)s')
-fh.setFormatter(formatter)
-
-# Add the handler to the logger
-webhook_logger.addHandler(fh)
+logging.basicConfig(level=logging.INFO)
 
 
 @app.route('/')
@@ -48,23 +32,22 @@ def webhook():
     # Secret Token Validation
     signature = request.headers.get('X-Hub-Signature-256')
     if signature is None:
-        webhook_logger.error("GitHub signature missing.")
+        #webhook_logger.error("GitHub signature missing.")
         return jsonify({"msg": "GitHub signature missing."}), 400
     # Verify the signature
     if not validate_signature(request.data, signature, SECRET_TOKEN):
-        webhook_logger.error("Invalid signature.")
+        #webhook_logger.error("Invalid signature.")
         print(signature)
        # return expected signature and received signature
 
         #return jsonify({"expected_signature": SECRET_TOKEN, "received_signature": signature}), 400
         return jsonify({"msg": "Invalid signature."}), 401
 
-    #data = request.get_json()
     # Parse the repository name
     data = request.data
 
     repo = extract_repository_info(data)
-    webhook_logger.info("Webhook received")
+    #webhook_logger.info("Webhook received")
     return jsonify({"msg": "Webhook received"})
 
 # Identify the repository the webhook is associated with

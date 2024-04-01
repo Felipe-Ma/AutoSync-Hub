@@ -18,3 +18,8 @@ def setup_logger():
     logger.addHandler(handler)
 
     return logger
+
+def log_repo_info(repo):
+    logger = setup_logger()
+    # Log repository information in a single line
+    logger.info(f"Repository: {repo._repo_name} - {repo._repo_full_name} - {repo._repo_owner}")

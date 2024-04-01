@@ -1,4 +1,6 @@
 import json
+from logger_config import *
+
 # Create object for repository
 class Repository:
     """ Class to represent a repository. """
@@ -57,8 +59,9 @@ def extract_repository_info(json_data):
     repo_name = data['repository']['name']
     repo_full_name = data['repository']['full_name']
     repo_owner = data['repository']['owner']['name']
-
     repo = Repository(repo_id, repo_name, repo_full_name, repo_owner)
-    display_info(repo)
+
+    # Log the repository information
+    log_repo_info(repo)
 
     return repo

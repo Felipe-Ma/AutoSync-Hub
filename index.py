@@ -40,62 +40,10 @@ def webhook():
     data = request.data
 
     repo = extract_repository_info(data)
-    #webhook_logger.info("Webhook received")
     return jsonify({"msg": "Webhook received"})
 
 # Identify the repository the webhook is associated with
 #def get_repository(data):
-
-
-"""def load_config():
-    
-    global REPOSITORIES # Reference the global hash table
-    global PORT # Reference the global port variable
-    global SECRET_TOKEN # Reference the global secret token
-
-    # Open YAML file and load the configuration
-    with open('config.yaml', 'r') as file:
-        try:
-            config = yaml.safe_load(file)
-            # Load the repositories from the configuration
-            try:
-                REPOSITORIES = config['REPOSITORIES']
-                logging.info(f"Repositories loaded: {REPOSITORIES}")
-                # Check if the repositories are empty
-                if not REPOSITORIES:
-                    logging.error("No repositories found in the configuration.")
-                    print("No repositories found in the configuration.")
-            except KeyError:
-                logging.error("No repositories found in the configuration.")
-
-            # Load the port from the configuration
-            try:
-                PORT = config['PORT']
-                logging.info(f"Port loaded: {PORT}")
-                # Check if the port is empty
-                if not PORT:
-                    logging.error("No port found in the configuration.")
-                    print("No port found in the configuration.")
-            except KeyError:
-                logging.error("No port found in the configuration.")
-
-            # Load the secret token from the configuration
-            try:
-                SECRET_TOKEN = config['SECRET_TOKEN']
-                logging.info(f"Secret token loaded: {SECRET_TOKEN}")
-                # Check if the secret token is empty
-                if not SECRET_TOKEN:
-                    logging.error("No secret token found in the configuration.")
-                    print("No secret token found in the configuration.")
-            except KeyError:
-                logging.error("No secret token found in the configuration.")
-
-
-            logging.info(f"Configuration loaded: {config}")
-        except yaml.YAMLError as exc:
-            # log to file in the same directory
-            logging.error(f"Error loading configuration: {exc}")
-        return config"""
 
 
 

@@ -4,6 +4,7 @@ import hashlib
 from flask import Flask, jsonify, request
 import yaml
 import logging
+from validate_signature import *
 
 app = Flask(__name__)
 
@@ -49,22 +50,18 @@ def webhook():
         webhook_logger.error("GitHub signature missing.")
         return jsonify({"msg": "GitHub signature missing."}), 400
     # Verify the signature
-    if not validate_signature(request.data, signature):
+    if not validate_signature(request.data, signature, SECRET_TOKEN):
         webhook_logger.error("Invalid signature.")
+        print(signature)
+       # return expected signature and received signature
+
+        #return jsonify({"expected_signature": SECRET_TOKEN, "received_signature": signature}), 400
         return jsonify({"msg": "Invalid signature."}), 401
 
     data = request.get_json()
     #print(data)
     webhook_logger.info("Webhook received")
     return jsonify({"msg": "Webhook received"})
-
-def validate_signature(data, signature):
-    # Validate the signature using HMAC SHA-256 algorithm.
-    hmac_gen = hmac.new(SECRET_TOKEN.encode(), data, hashlib.sha256)
-    expected_signature = 'sha256=' + hmac_gen.hexdigest()
-    print(expected_signature)
-    print(signature)
-    return hmac.compare_digest(expected_signature, signature)
 
 # Identify the repository the webhook is associated with
 #def get_repository(data):

@@ -49,16 +49,9 @@ def webhook():
 
 
 if __name__ == '__main__':
-    #REPOSITORIES, PORT, SECRET_TOKEN = load_config()
-    #print(REPOSITORIES)
-    #print(PORT)
-    #print(SECRET_TOKEN)
     # Load the configuration
     config = load_config()
-    REPOSITORIES = config.repositories
-    PORT = config.port
-    SECRET_TOKEN = config.secret_token
-
+    REPOSITORIES, PORT, SECRET_TOKEN = config.repositories, config.port, config.secret_token
 
     # Turn off debug mode in production environment
     app.run(host='0.0.0.0', port=5000, debug=True)

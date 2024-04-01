@@ -5,6 +5,7 @@ from flask import Flask, jsonify, request
 import yaml
 import logging
 from validate_signature import *
+from parse_repository_name import *
 
 app = Flask(__name__)
 
@@ -59,7 +60,8 @@ def webhook():
         return jsonify({"msg": "Invalid signature."}), 401
 
     data = request.get_json()
-    #print(data)
+    # Parse the repository name
+    repository_name = parse_repository_name(data)
     webhook_logger.info("Webhook received")
     return jsonify({"msg": "Webhook received"})
 

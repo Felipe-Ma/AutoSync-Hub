@@ -59,9 +59,11 @@ def webhook():
         #return jsonify({"expected_signature": SECRET_TOKEN, "received_signature": signature}), 400
         return jsonify({"msg": "Invalid signature."}), 401
 
-    data = request.get_json()
+    #data = request.get_json()
     # Parse the repository name
-    repository_name = parse_repository_name(data)
+    data = request.data
+
+    repo = extract_repository_info(data)
     webhook_logger.info("Webhook received")
     return jsonify({"msg": "Webhook received"})
 

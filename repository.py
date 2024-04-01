@@ -41,7 +41,24 @@ class Repository:
     def repo_owner(self, value):
         self._repo_owner = value
 
+def display_info(self):
+    print(f"ID: {self._repo_id}")
+    print(f"Name: {self._repo_name}")
+    print(f"Full Name: {self._repo_full_name}")
+    print(f"Owner: {self._repo_owner}")
+
 # Python file to parse repository name
-def parse_repository_name():
-    """ Parse the repository name from the data. """
-    repository_name = data['repository']['name'] # Extract the repository name from the data
+def extract_repository_info(json_data):
+    """ Extract repository information from the JSON data. """
+    data = json.loads(json_data)
+
+    # Extract the repository information
+    repo_id = data['repository']['id']
+    repo_name = data['repository']['name']
+    repo_full_name = data['repository']['full_name']
+    repo_owner = data['repository']['owner']['name']
+
+    repo = Repository(repo_id, repo_name, repo_full_name, repo_owner)
+    display_info(repo)
+
+    return repo

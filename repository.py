@@ -1,3 +1,4 @@
+import json
 # Create object for repository
 class Repository:
     """ Class to represent a repository. """
@@ -39,7 +40,7 @@ class Repository:
     @repo_owner.setter
     def repo_owner(self, value):
         self._repo_owner = value
-        
+
 # Python file to parse repository name
 def parse_repository_name():
     """ Parse the repository name from the data. """

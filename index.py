@@ -5,7 +5,7 @@ from flask import Flask, jsonify, request
 import yaml
 import logging
 from validate_signature import *
-from parse_repository_name import *
+from repository import *
 
 app = Flask(__name__)
 

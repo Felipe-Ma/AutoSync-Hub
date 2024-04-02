@@ -63,5 +63,6 @@ def extract_repository_info(json_data):
 
     # Log the repository information
     log_repo_info(repo)
+    display_info(repo)
 
     return repo

@@ -3,6 +3,7 @@ from flask import Flask, jsonify, request
 from validate_signature import *
 from repository import *
 from config_loader import *
+from repo_checker import *
 
 app = Flask(__name__)
 
@@ -22,35 +23,42 @@ def say_hello():
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
+    config = app.config['my_config']
+
     # Secret Token Validation
     signature = request.headers.get('X-Hub-Signature-256')
     if signature is None:
-        #webhook_logger.error("GitHub signature missing.")
+        log_error("GitHub signature missing.")
         return jsonify({"msg": "GitHub signature missing."}), 400
+
     # Verify the signature
     if not validate_signature(request.data, signature, SECRET_TOKEN):
-        #webhook_logger.error("Invalid signature.")
-        print(signature)
-       # return expected signature and received signature
-
-        #return jsonify({"expected_signature": SECRET_TOKEN, "received_signature": signature}), 400
+        log_error("Invalid signature.")
         return jsonify({"msg": "Invalid signature."}), 401
 
-    # Parse the repository name
+    # Data Extraction
     data = request.data
 
+    # Extract the repository information
     repo = extract_repository_info(data)
+
+    # Check if the repository is in the list of repositories
+    if check_repositories(repo._repo_name, config):
+        log_success(f"Repository {repo._repo_name} found in the list of repositories.")
+        return jsonify({"msg": "Repository found in the list of repositories."})
+    else:
+        log_error(f"Repository {repo._repo_name} not found in the list of repositories.")
+        return jsonify({"msg": "Repository not found in the list of repositories."})
+
     return jsonify({"msg": "Webhook received"})
 
-# Identify the repository the webhook is associated with
-#def get_repository(data):
-
-
-
+#
 
 if __name__ == '__main__':
     # Load the configuration
     config = load_config()
+    app.config['my_config'] = config # Store the configuration in the app
+
     REPOSITORIES, PORT, SECRET_TOKEN = config.repositories, config.port, config.secret_token
 
     # Turn off debug mode in production environment
